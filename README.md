@@ -1,2 +1,2 @@
 # fotos
-Upload, donwload and delete photos using PHP.
+Upload, download and delete photos using PHP.
