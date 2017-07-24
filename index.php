@@ -8,53 +8,57 @@
 </head>
 <body>
 	<script type="text/javascript">
-		$('formUpload').submit(function(){
-			var postData = $('formUpload').serializeArray();
-			var formURL  = $('formUpload').attr("action");
-
-			$.ajax({
-				url: formURL,
-				type: "POST",
-				data: postData,
-				success: function(data, textStatus, jqXHR)
-				{
-					alert(data);
-				}
+		$(function (){
+			/*
+			$(".alert").fadeTo(5000, 500).slideUp(500, function(){
+				console.log("hide");
+				$(".alert").alert('close');
 			});
-
-			return false;
+			*/
 		});
+		
+
+		function updateList(){
+			var input = document.getElementById('file');
+			var output = document.getElementById('fileList');
+			for (var i = 0; i < input.files.length; ++i) {
+				output.innerHTML += '<li>' + input.files.item(i).name + '</li>';
+			}
+		}
 	</script>
 	<br />
 	<div class="container">
 		<?php
 		if(isset($_GET['processing']) && isset($_GET['msg'])){
 			if($_GET['processing'] == 'true') {
-				echo "<div class='alert alert-success' align='center' style='width: 100%'><strong>".$_GET['msg']."</strong></div>";
+				echo "<div class='alert alert-success' align='center' style='width: 100%'>";
 			}else{
-				echo "<div class='alert alert-danger' align='center' style='width: 100%'><strong>".$_GET['msg']."</strong></div>";
+				echo "<div class='alert alert-danger' align='center' style='width: 100%'>";
 			}
+			echo "<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>";
+			echo "<strong>".$_GET['msg']."</strong>";
+			echo "</div>";
 		}
 		?>
 		<div class="panel panel-default">
 			<div class="panel-heading" align="center" style="width: 100%;">
 				<h4>Selecione um arquivo</h4>
-				<div class="form-inline">
-					<form id="formUpload" name="formUpload" action="upload.php" method="post" enctype="multipart/form-data">
+				<form id="formUpload" name="formUpload" action="upload2.php" method="post" enctype="multipart/form-data">
+					<div class="form-inline">
 						<div class="form-group">
-							<input type="file" name="fileToUpload" id="fileToUpload">
+							<input name="upload[]" id="file" type="file" multiple="multiple" onchange="updateList()" />
 						</div>
-						<button type="submit" class="btn btn-primary" id="js-upload-submit">Salvar</button>
-					</form>
-				</div>
-
+						<button type="submit" class="btn btn-success" id="js-upload-submit"><i class="glyphicon glyphicon-upload"></i><span>Enviar</span></button>
+						<br />
+						<div id="fileList" align="center"></div>
+					</div>
+				</form>
 			</div>
-			<div class="panel-body" align="center">
+			<div class="panel-body" align="center">	
 				<div class="span7">   
 					<div class="widget stacked widget-table action-table">
-						<div class="widget-header">
-							<span class="glyphicon glyphicon-list" aria-hidden="true"><i class="icon-th-list"></i></span>
-							<h3>Arquivos</h3>
+						<div class="widget-header" align="left">
+							<h4><span class="glyphicon glyphicon-list" aria-hidden="true"><i class="icon-th-list"></i></span>&nbsp;&nbsp;Arquivos</h4>
 						</div>
 						<div class="widget-content">
 							<table class="table table-striped table-bordered">
