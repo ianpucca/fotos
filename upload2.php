@@ -23,11 +23,11 @@ for($i=0; $i<$total; $i++) {
 }
 
 if ($uploadOk == 0) {
-  header("Location: index.php?processing=false&msg=".$msgErro);
+  header("Location: main.php?processing=false&msg=".$msgErro);
   exit();
 // if everything is ok, try to upload file
 } else {
-  header("Location: index.php?processing=true&msg=Arquivos enviado com sucesso.");
+  header("Location: main.php?processing=true&msg=Arquivos enviado com sucesso.");
   exit();
 }
 

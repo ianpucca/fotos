@@ -36,15 +36,15 @@ if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg
 }
 // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {
-	header("Location: main.php?processing=false&msg=".$msgErro);
+	header("Location: index.php?processing=false&msg=".$msgErro);
 	exit();
 // if everything is ok, try to upload file
 } else {
 	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-		header("Location: main.php?processing=true&msg=Arquivo enviado com sucesso.");
+		header("Location: index.php?processing=true&msg=Arquivo enviado com sucesso.");
 		exit();
 	} else {
-		header("Location: main.php?processing=false&msg=".$msgErro);
+		header("Location: index.php?processing=false&msg=".$msgErro);
 		exit();
 	}
 }

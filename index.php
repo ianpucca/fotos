@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 	<title>Fotos</title>
@@ -8,123 +9,44 @@
 </head>
 <body>
 	<script type="text/javascript">
-		$(function (){
-			/*
-			$(".alert").fadeTo(5000, 500).slideUp(500, function(){
-				console.log("hide");
-				$(".alert").alert('close');
+		function login(){
+			var usuario = $("#usuario");
+			var senha = $("#senha");
+			$.get('login.php?usuario='+usuario.val()+"&senha="+senha.val(), function(data) {
+				if(data === "true"){
+					window.location = "main.php";
+				}else{
+					alert('Oops');
+				}
 			});
-			*/
-		});
-		
-
-		function updateList(){
-			var input = document.getElementById('file');
-			var output = document.getElementById('fileList');
-			for (var i = 0; i < input.files.length; ++i) {
-				output.innerHTML += '<li>' + input.files.item(i).name + '</li>';
-			}
 		}
 	</script>
-	<br />
-	<div class="container">
-		<?php
-		if(isset($_GET['processing']) && isset($_GET['msg'])){
-			if($_GET['processing'] == 'true') {
-				echo "<div class='alert alert-success' align='center' style='width: 100%'>";
-			}else{
-				echo "<div class='alert alert-danger' align='center' style='width: 100%'>";
-			}
-			echo "<a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>";
-			echo "<strong>".$_GET['msg']."</strong>";
-			echo "</div>";
-		}
-		?>
-		<div class="panel panel-default">
-			<div class="panel-heading" align="center" style="width: 100%;">
-				<h4>Selecione um arquivo</h4>
-				<form id="formUpload" name="formUpload" action="upload2.php" method="post" enctype="multipart/form-data">
-					<div class="form-inline">
-						<div class="form-group">
-							<input name="upload[]" id="file" type="file" multiple="multiple" onchange="updateList()" />
+	<div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+		<div class="panel panel-info" >
+			<div class="panel-heading">
+				<div class="panel-title">Login</div>
+			</div>     
+			<div style="padding-top:30px" class="panel-body" >
+				<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+				<form id="loginform" class="form-horizontal" role="form">
+
+					<div style="margin-bottom: 25px" class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+						<input id="usuario" type="text" class="form-control" name="username" value="" placeholder="Usuário">                                        
+					</div>
+
+					<div style="margin-bottom: 25px" class="input-group">
+						<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+						<input id="senha" type="password" class="form-control" name="password" placeholder="Senha">
+					</div>
+					<div style="margin-top:10px" class="form-group">
+						<div class="col-sm-12 controls">
+							<a id="btn-login" href="#" class="btn btn-success" onclick="login()">Login  </a>
 						</div>
-						<button type="submit" class="btn btn-success" id="js-upload-submit"><i class="glyphicon glyphicon-upload"></i><span>Enviar</span></button>
-						<br />
-						<div id="fileList" align="center"></div>
 					</div>
 				</form>
 			</div>
-			<div class="panel-body" align="center">	
-				<div class="span7">   
-					<div class="widget stacked widget-table action-table">
-						<div class="widget-header" align="left">
-							<h4><span class="glyphicon glyphicon-list" aria-hidden="true"><i class="icon-th-list"></i></span>&nbsp;&nbsp;Arquivos</h4>
-						</div>
-						<div class="widget-content">
-							<table class="table table-striped table-bordered">
-								<thead>
-									<th style="width: 10%">#</th>
-									<th style="width: 80%">Nome</th>
-									<th style="width: 10%">Tamanho</th>
-									<th>Opções</th>
-								</thead>
-								<tbody>
-									<?php 
-
-									function formatSizeUnits($bytes)
-									{
-										if ($bytes >= 1073741824)
-										{
-											$bytes = number_format($bytes / 1073741824, 2) . ' GB';
-										}
-										elseif ($bytes >= 1048576)
-										{
-											$bytes = number_format($bytes / 1048576, 2) . ' MB';
-										}
-										elseif ($bytes >= 1024)
-										{
-											$bytes = number_format($bytes / 1024, 2) . ' KB';
-										}
-										elseif ($bytes > 1)
-										{
-											$bytes = $bytes . ' bytes';
-										}
-										elseif ($bytes == 1)
-										{
-											$bytes = $bytes . ' byte';
-										}
-										else
-										{
-											$bytes = '0 bytes';
-										}
-
-										return $bytes;
-									}
-
-
-									$i = 1;
-									if ($handle = opendir('./arquivos')) {
-										while (false !== ($entry = readdir($handle))) {
-											if ($entry != "." && $entry != "..") {
-												echo " <tr> ";
-												echo " 	<td>".$i."</td> ";
-												echo " 	<td title=\"Clique para fazer download\"><a href=\"download.php?file=".$entry."\">".$entry."</a></td> ";
-												echo "  <td>".formatSizeUnits(filesize('./arquivos/'.$entry))."</td>";
-												echo " 	<td title=\"Apagar\"><a href=\"delete.php?file=".$entry."\" class=\"btn btn-danger\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a></td> ";
-												echo " </tr> ";
-												$i++;
-											}
-										}
-										closedir($handle);
-									}
-									?>
-								</tbody>
-							</table>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
+		</div>  
 	</div>
 </body>
 </html>
