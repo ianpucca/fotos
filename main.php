@@ -67,16 +67,22 @@
 			for (i = 0; i < tr.length; i++) {
 				td = tr[i].getElementsByTagName("td")[0];
 				if (td) {
-					console.log(td.innerHTML.toUpperCase());
-					console.log(filter);
-					console.log(td.innerHTML.toUpperCase().indexOf(filter));
-
 					if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
 						tr[i].style.display = "";
 					} else {
 						tr[i].style.display = "none";
 					}
 				}       
+			}
+		}
+
+		function showProgressBar(){
+			$("#progress").show();
+		}
+
+		function deleteFile(file){
+			if(confirm("Tem certeza que deseja remover o arquivo "+file+"?")){
+				window.location = "delete.php?file="+file;
 			}
 		}
 	</script>
@@ -97,7 +103,7 @@
 		<div class="panel panel-default" id="panelFotos">
 			<div class="panel-heading" align="center" style="width: 100%;">
 				<h4>Selecione um arquivo</h4>
-				<form id="formUpload" name="formUpload" action="upload2.php" method="post" enctype="multipart/form-data">
+				<form id="formUpload" name="formUpload" action="upload2.php" method="post" enctype="multipart/form-data" onsubmit="showProgressBar();">
 					<div class="form-inline">
 						<div class="form-group">
 							<input name="upload[]" id="file" type="file" multiple="multiple" onchange="updateList()" required/>
@@ -111,6 +117,11 @@
 			<div class="panel-body" align="center">	
 				<div class="span7">   
 					<div class="widget stacked widget-table action-table">
+						<div class="progress" id="progress" style="display: none">
+							<div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+								Processando, aguarde...
+							</div>
+						</div>
 						<div class="widget-header" align="left">
 							<h4><span class="glyphicon glyphicon-list" aria-hidden="true"><i class="icon-th-list"></i></span>&nbsp;&nbsp;Arquivos</h4>
 							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -122,7 +133,7 @@
 								<thead>
 									<th style="width: 80%" onclick="sortTable(0)">Nome</th>
 									<th style="width: 10%">Tamanho</th>
-									<th colspan="2">Opções</th>
+									<th colspan="3">Opções</th>
 								</thead>
 								<tbody>
 									<?php 
@@ -160,10 +171,11 @@
 										while (false !== ($entry = readdir($handle))) {
 											if ($entry != "." && $entry != "..") {
 												echo " <tr> ";
-												echo " 	<td title=\"Clique para fazer download\"><a href=\"download.php?file=".$entry."\">".$entry."</a></td> ";
+												echo " 	<td>".$entry."</td> ";
 												echo "  <td>".formatSizeUnits(filesize('./arquivos/'.$entry))."</td>";
-												echo " 	<td title=\"Apagar arquivo.\"> <a href=\"delete.php?file=".$entry."\" class=\"btn btn-danger\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\"></span></a></td> ";
-												echo "	<td title=\"Visualizar arquivo.\"> <a class=\"btn btn-primary\" href=\"arquivos/".$entry."\" data-lightbox=\"example-1\"> <span class=\"glyphicon glyphicon-search\" aria-hidden=\"true\"></span></a>";
+												echo " 	<td title=\"Download do arquivo.\"> <a href=\"download.php?file=".$entry."\"	onclick=\"(showProgressBar())\" class=\"btn btn-success\">                             <span class=\"glyphicon glyphicon-download\" aria-hidden=\"true\"></span>&nbsp; Baixar	  </a></td> ";
+												echo "	<td title=\"Visualizar arquivo.\">  <a href=\"arquivos/".$entry."\"          										class=\"btn btn-primary\" data-lightbox=\"example-1\"> <span class=\"glyphicon glyphicon-search\" 	aria-hidden=\"true\"></span>&nbsp; Visualizar </a></td>";
+												echo " 	<td title=\"Apagar arquivo.\"> 	    <a href=\"#\"      onclick=\"(deleteFile('".$entry."'))\" class=\"btn btn-danger\">							   <span class=\"glyphicon glyphicon-remove\" 	aria-hidden=\"true\"></span>&nbsp; Apagar	  </a></td> ";
 												echo " </tr> ";
 											}
 										}

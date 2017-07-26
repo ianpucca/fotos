@@ -9,44 +9,64 @@
 </head>
 <body>
 	<script type="text/javascript">
+
+		$(document).ready(function() {
+			$('#btn-login').keydown(function(event) {
+				if (event.keyCode == 13) {
+					this.form.submit();
+					return false;
+				}
+			});
+
+		});
+
 		function login(){
+			var divError = $("#divError");
 			var usuario = $("#usuario");
 			var senha = $("#senha");
+			divError.hide();
 			$.get('login.php?usuario='+usuario.val()+"&senha="+senha.val(), function(data) {
 				if(data === "true"){
 					window.location = "main.php";
 				}else{
-					alert('Oops');
+					usuario.val("");
+					senha.val("");
+					divError.html('Usuário ou senha incorretos.');
+					divError.show();
 				}
 			});
 		}
 	</script>
-	<div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
-		<div class="panel panel-info" >
-			<div class="panel-heading">
-				<div class="panel-title">Login</div>
-			</div>     
-			<div style="padding-top:30px" class="panel-body" >
-				<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-				<form id="loginform" class="form-horizontal" role="form">
+	<br />
+	<div class="container" align="center">
+		<div id="divError" class="alert alert-danger" style="width: 50%;display: none;" align="center"></div>
+		<div id="loginbox" style="margin-top:50px; width: 50%; height: 50%;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" align="center">                    
+			<div class="panel panel-info" style="width: 50%; height: 50%">
+				<div class="panel-heading">
+					<div class="panel-title">Login</div>
+				</div>     
+				<div style="padding-top:30px" class="panel-body" >
+					<div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+					<form id="loginform" class="form-horizontal" role="form">
 
-					<div style="margin-bottom: 25px" class="input-group">
-						<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-						<input id="usuario" type="text" class="form-control" name="username" value="" placeholder="Usuário">                                        
-					</div>
-
-					<div style="margin-bottom: 25px" class="input-group">
-						<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-						<input id="senha" type="password" class="form-control" name="password" placeholder="Senha">
-					</div>
-					<div style="margin-top:10px" class="form-group">
-						<div class="col-sm-12 controls">
-							<a id="btn-login" href="#" class="btn btn-success" onclick="login()">Login  </a>
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+							<input id="usuario" type="text" class="form-control" name="username" value="" placeholder="Usuário">                                        
 						</div>
-					</div>
-				</form>
-			</div>
-		</div>  
+
+						<div style="margin-bottom: 25px" class="input-group">
+							<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+							<input id="senha" type="password" class="form-control" name="password" placeholder="Senha">
+						</div>
+						<div style="margin-top:10px" class="form-group">
+							<div class="col-sm-12 controls">
+								<a id="btn-login" href="#" class="btn btn-success" onclick="login()">Login  </a>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>  
+		</div>
 	</div>
 </body>
 </html>
