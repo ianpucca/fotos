@@ -11,17 +11,20 @@
 <body>
 	<script type="text/javascript">
 		function sortTable(n) {
+
 			var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
 			table = document.getElementById("tableFotos");
 			switching = true;
 			
 			dir = "asc"; 
+
 			while (switching) {
 				switching = false;
 				rows = table.getElementsByTagName("TR");
 				for (i = 1; i < (rows.length - 1); i++) {
 					shouldSwitch = false;
 					x = rows[i].getElementsByTagName("TD")[n];
+
 					y = rows[i + 1].getElementsByTagName("TD")[n];
 					if (dir == "asc") {
 						if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
@@ -46,6 +49,13 @@
 					}
 				}
 			}
+
+			
+			if(dir == "asc"){
+				$("#spanIconSortTable").attr('class', 'glyphicon glyphicon-sort-by-alphabet');
+			}else{
+				$("#spanIconSortTable").attr('class', 'glyphicon glyphicon-sort-by-alphabet-alt');				
+			}
 		}
 
 		function updateList(){
@@ -69,8 +79,10 @@
 				if (td) {
 					if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
 						tr[i].style.display = "";
+						$('a', tr[i].getElementsByTagName("td")[3]).attr("data-lightbox","example-1");
 					} else {
 						tr[i].style.display = "none";
+						$('a', tr[i].getElementsByTagName("td")[3]).removeAttr("data-lightbox");
 					}
 				}       
 			}
@@ -106,7 +118,7 @@
 				<form id="formUpload" name="formUpload" action="upload2.php" method="post" enctype="multipart/form-data" onsubmit="showProgressBar();">
 					<div class="form-inline">
 						<div class="form-group">
-							<input name="upload[]" id="file" type="file" multiple="multiple" onchange="updateList()" required/>
+							<input name="upload[]" id="file" type="file" multiple="multiple" onchange="updateList()" required accept="image/*"/>
 						</div>
 						<button type="submit" class="btn btn-success" id="js-upload-submit"><i class="glyphicon glyphicon-upload"></i><span>Enviar</span></button>
 						<br />
@@ -131,7 +143,7 @@
 						<div class="widget-content">
 							<table id="tableFotos" class="table table-striped table-bordered">
 								<thead>
-									<th style="width: 80%" onclick="sortTable(0)">Nome</th>
+									<th style="width: 80%">Nome <a href="#" onclick="sortTable(0)" title="Ordenar"><span id="spanIconSortTable" class="glyphicon glyphicon-sort-by-alphabet" aria-hidden="true"></span></a></th>
 									<th style="width: 10%">Tamanho</th>
 									<th colspan="3">Opções</th>
 								</thead>
@@ -173,9 +185,9 @@
 												echo " <tr> ";
 												echo " 	<td>".$entry."</td> ";
 												echo "  <td>".formatSizeUnits(filesize('./arquivos/'.$entry))."</td>";
-												echo " 	<td title=\"Download do arquivo.\"> <a href=\"download.php?file=".$entry."\"	onclick=\"(showProgressBar())\" class=\"btn btn-success\">                             <span class=\"glyphicon glyphicon-download\" aria-hidden=\"true\"></span>&nbsp; Baixar	  </a></td> ";
-												echo "	<td title=\"Visualizar arquivo.\">  <a href=\"arquivos/".$entry."\"          										class=\"btn btn-primary\" data-lightbox=\"example-1\"> <span class=\"glyphicon glyphicon-search\" 	aria-hidden=\"true\"></span>&nbsp; Visualizar </a></td>";
-												echo " 	<td title=\"Apagar arquivo.\"> 	    <a href=\"#\"      onclick=\"(deleteFile('".$entry."'))\" class=\"btn btn-danger\">							   <span class=\"glyphicon glyphicon-remove\" 	aria-hidden=\"true\"></span>&nbsp; Apagar	  </a></td> ";
+												echo " 	<td title=\"Download do arquivo.\"> <a href=\"download.php?file=".$entry."\" onclick=\"(showProgressBar())\" class=\"btn btn-success\"> <span class=\"glyphicon glyphicon-download\" aria-hidden=\"true\"></span>&nbsp; Baixar	  </a></td> ";
+												echo "	<td title=\"Visualizar arquivo.\">  <a href=\"arquivos/".$entry."\" class=\"btn btn-primary\" data-lightbox=\"example-1\" title=".$entry."> <span class=\"glyphicon glyphicon-search\" 	aria-hidden=\"true\"></span>&nbsp; Visualizar </a></td>";
+												echo " 	<td title=\"Apagar arquivo.\"> 	    <a href=\"#\" onclick=\"(deleteFile('".$entry."'))\" class=\"btn btn-danger\"> <span class=\"glyphicon glyphicon-remove\" 	aria-hidden=\"true\"></span>&nbsp; Apagar	  </a></td> ";
 												echo " </tr> ";
 											}
 										}
