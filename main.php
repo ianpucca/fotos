@@ -101,6 +101,7 @@
 	<br />
 	<div class="container">
 		<?php
+		session_start();
 		if(isset($_GET['processing']) && isset($_GET['msg'])){
 			if($_GET['processing'] == 'true') {
 				echo "<div class='alert alert-success' align='center' style='width: 100%'>";
@@ -112,6 +113,19 @@
 			echo "</div>";
 		}
 		?>
+		<div class="form-inline">
+			<p>
+			<?php  
+				echo "<div>";
+				echo "<p><h4>Usuário: ".$_SESSION['usuario']."</h4>";
+				echo "<button type=\"button\" class=\"btn btn-danger btn-sm\" onclick=\"window.location='logout.php'\">";
+				echo "<span class=\"glyphicon glyphicon-log-out\"></span> Desconectar";
+				echo "</button>	";
+				echo "</p>";
+				echo "</div>";
+			?>
+			</p>
+		</div>
 		<div class="panel panel-default" id="panelFotos">
 			<div class="panel-heading" align="center" style="width: 100%;">
 				<h4>Selecione um arquivo</h4>
@@ -149,7 +163,7 @@
 								</thead>
 								<tbody>
 									<?php 
-
+									
 									function formatSizeUnits($bytes)
 									{
 										if ($bytes >= 1073741824)
@@ -187,7 +201,11 @@
 												echo "  <td>".formatSizeUnits(filesize('./arquivos/'.$entry))."</td>";
 												echo " 	<td title=\"Download do arquivo.\"> <a href=\"download.php?file=".$entry."\" onclick=\"(showProgressBar())\" class=\"btn btn-success\"> <span class=\"glyphicon glyphicon-download\" aria-hidden=\"true\"></span>&nbsp; Baixar	  </a></td> ";
 												echo "	<td title=\"Visualizar arquivo.\">  <a href=\"arquivos/".$entry."\" class=\"btn btn-primary\" data-lightbox=\"example-1\" title=".$entry."> <span class=\"glyphicon glyphicon-search\" 	aria-hidden=\"true\"></span>&nbsp; Visualizar </a></td>";
-												echo " 	<td title=\"Apagar arquivo.\"> 	    <a href=\"#\" onclick=\"(deleteFile('".$entry."'))\" class=\"btn btn-danger\"> <span class=\"glyphicon glyphicon-remove\" 	aria-hidden=\"true\"></span>&nbsp; Apagar	  </a></td> ";
+												if(strcmp($_SESSION['adm'], 'true') == 0){
+													echo " 	<td title=\"Apagar arquivo.\"> 	    <a href=\"#\" onclick=\"(deleteFile('".$entry."'))\" class=\"btn btn-danger\"> <span class=\"glyphicon glyphicon-remove\" 	aria-hidden=\"true\"></span>&nbsp; Apagar	  </a></td> ";	
+												}else{
+													echo " 	<td title=\"Apagar arquivo.\"> 	    <a href=\"#\" onclick=\"(deleteFile('".$entry."'))\" class=\"btn btn-danger disabled\"> <span class=\"glyphicon glyphicon-remove\" 	aria-hidden=\"true\"></span>&nbsp; Apagar	  </a></td> ";	
+												}
 												echo " </tr> ";
 											}
 										}

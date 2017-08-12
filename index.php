@@ -11,9 +11,12 @@
 	<script type="text/javascript">
 
 		$(document).ready(function() {
-			$('#btn-login').keydown(function(event) {
+
+			$("#usuario").focus();
+
+			$('#loginform').keydown(function(event) {
 				if (event.keyCode == 13) {
-					this.form.submit();
+					$("#btn-login").trigger("click");
 					return false;
 				}
 			});
@@ -25,6 +28,13 @@
 			var usuario = $("#usuario");
 			var senha = $("#senha");
 			divError.hide();
+
+			if(usuario.val() == '' || senha.val() == ''){
+				divError.html('Informe um usuário ou senha válidos.');
+				divError.show();
+				return;
+			}
+
 			$.get('login.php?usuario='+usuario.val()+"&senha="+senha.val(), function(data) {
 				if(data === "true"){
 					window.location = "main.php";
@@ -35,10 +45,11 @@
 					divError.show();
 				}
 			});
+			$("#usuario").focus();
 		}
 	</script>
 	<br />
-	<div class="container" align="center">
+	<div class="container" align="center" id="divMain">
 		<div id="divError" class="alert alert-danger" style="width: 50%;display: none;" align="center"></div>
 		<div id="loginbox" style="margin-top:50px; width: 50%; height: 50%;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2" align="center">                    
 			<div class="panel panel-info" style="width: 50%; height: 50%">
