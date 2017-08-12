@@ -200,7 +200,7 @@
 												echo " 	<td>".$entry."</td> ";
 												echo "  <td>".formatSizeUnits(filesize('./arquivos/'.$entry))."</td>";
 												echo " 	<td title=\"Download do arquivo.\"> <a href=\"download.php?file=".$entry."\" onclick=\"(showProgressBar())\" class=\"btn btn-success\"> <span class=\"glyphicon glyphicon-download\" aria-hidden=\"true\"></span>&nbsp; Baixar	  </a></td> ";
-												echo "	<td title=\"Visualizar arquivo.\">  <a href=\"arquivos/".$entry."\" class=\"btn btn-primary\" data-lightbox=\"example-1\" title=".$entry."> <span class=\"glyphicon glyphicon-search\" 	aria-hidden=\"true\"></span>&nbsp; Visualizar </a></td>";
+												echo "	<td title=\"Visualizar arquivo.\">  <a href=\"arquivos/".$entry."\" class=\"btn btn-primary\" data-lightbox=\"example-1\" title=\"$entry\"> <span class=\"glyphicon glyphicon-search\" 	aria-hidden=\"true\"></span>&nbsp; Visualizar </a></td>";
 												if(strcmp($_SESSION['adm'], 'true') == 0){
 													echo " 	<td title=\"Apagar arquivo.\"> 	    <a href=\"#\" onclick=\"(deleteFile('".$entry."'))\" class=\"btn btn-danger\"> <span class=\"glyphicon glyphicon-remove\" 	aria-hidden=\"true\"></span>&nbsp; Apagar	  </a></td> ";	
 												}else{
